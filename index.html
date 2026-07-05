@@ -1617,6 +1617,13 @@ footer p {
   <p>© 2026 SignalLens. 병원 마케팅의 시그널을 찾아준다.<br>문의: mr.ceo@daum.net</p>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+const sbClient = window.supabase.createClient(
+  'https://vggojmabcnixwyeitknw.supabase.co',
+  'sb_publishable_Rnz3InWQzTDmSTRnyypQpA_YfM_G_vw'
+);
+</script>
 <script>
 // Scroll reveal
 const observer = new IntersectionObserver((entries) => {
@@ -1631,11 +1638,17 @@ const observer = new IntersectionObserver((entries) => {
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
 // CTA submit
-function submitCTA() {
+async function submitCTA() {
   const email = document.getElementById('ctaEmail').value.trim();
   if (!email || !email.includes('@')) {
     alert('이메일을 입력해주세요');
     return;
+  }
+  try {
+    const { error } = await sbClient.from('signallens_leads').insert({ email });
+    if (error) throw error;
+  } catch (e) {
+    console.error('저장 오류:', e);
   }
   document.getElementById('ctaForm').style.display = 'none';
   document.getElementById('ctaSuccess').classList.add('show');
