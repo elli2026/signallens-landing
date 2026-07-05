@@ -1,0 +1,1647 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta property="og:title" content="SignalLens — 병원 마케팅, 감이 아니라 데이터로" />
+<meta property="og:description" content="마케팅 성과 분석부터 키워드 추적, 경쟁사 비교, AI 전략까지. 병원 마케팅의 모든 시그널을 한눈에." />
+<meta property="og:type" content="website" />
+<title>SignalLens — 병원 마케팅, 감이 아니라 데이터로</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;800;900&family=Unbounded:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0C1630;
+  --navy-mid: #162044;
+  --blue: #0044FF;
+  --blue-light: #3B7BFF;
+  --orange: #F09700;
+  --orange-dark: #D88600;
+  --orange-light: #FFF7EB;
+  --dark: #1A1A2E;
+  --gray: #6B7280;
+  --gray-light: #E5E7EB;
+  --light: #F8F9FC;
+  --white: #FFFFFF;
+  --red: #EF4444;
+  --green: #22C55E;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--light);
+  color: var(--dark);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  word-break: keep-all;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+@keyframes countUp {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== HERO ===== */
+.hero {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem 1.5rem 3rem;
+  position: relative;
+  background: linear-gradient(170deg, #0C1630 0%, #0D1F4D 50%, #0C1630 100%);
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -200px;
+  right: -150px;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,68,255,0.12) 0%, transparent 70%);
+  animation: float 8s ease-in-out infinite;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -100px;
+  left: -100px;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(240,151,0,0.08) 0%, transparent 70%);
+  animation: float 10s ease-in-out infinite reverse;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 520px;
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.4rem;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.2s;
+}
+
+.logo-svg { display: block; }
+
+.logo-tagline-row {
+  font-size: 0.9rem;
+  color: rgba(200,220,255,0.55);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  margin-bottom: 2.8rem;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.3s;
+}
+
+.dot-orange { color: var(--orange); }
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--blue-light);
+  padding: 6px 18px;
+  background: rgba(0,68,255,0.1);
+  border-radius: 24px;
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.3s;
+}
+
+.badge-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--blue-light);
+  animation: pulse 2s ease infinite;
+}
+
+.subline-bold {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--white);
+  margin-bottom: 2.2rem;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.7s;
+}
+
+.hero-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 1s;
+  position: relative;
+  z-index: 2;
+}
+
+.btn-hero-outline {
+  display: inline-block;
+  padding: 15px 32px;
+  background: transparent;
+  color: var(--white);
+  border: 2px solid rgba(255,255,255,0.25);
+  border-radius: 50px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-decoration: none;
+}
+
+.btn-hero-outline:hover {
+  border-color: rgba(255,255,255,0.5);
+  background: rgba(255,255,255,0.05);
+  transform: translateY(-2px);
+}
+
+.headline {
+  font-size: clamp(2rem, 7vw, 3rem);
+  font-weight: 900;
+  line-height: 1.3;
+  margin-bottom: 1rem;
+  color: var(--white);
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.4s;
+}
+
+.headline .blue {
+  color: var(--blue-light);
+}
+
+.subline {
+  font-size: 1.05rem;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.75;
+  margin-bottom: 2.2rem;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.6s;
+}
+
+/* ===== DASHBOARD MOCKUP ===== */
+.mockup-wrap {
+  position: relative;
+  z-index: 2;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.8s;
+  margin-bottom: 2rem;
+}
+
+.dash-mock {
+  width: 320px;
+  background: var(--white);
+  border-radius: 20px;
+  padding: 0;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.08);
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.dash-top {
+  background: var(--navy);
+  padding: 14px 18px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dash-top .app-name {
+  font-family: 'Unbounded', sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--blue-light);
+}
+
+.dash-top .nav-pills {
+  display: flex;
+  gap: 4px;
+}
+
+.dash-top .pill {
+  font-size: 8px;
+  padding: 3px 8px;
+  border-radius: 10px;
+  color: rgba(255,255,255,0.4);
+  font-weight: 600;
+}
+.dash-top .pill.active {
+  background: rgba(0,68,255,0.3);
+  color: var(--blue-light);
+}
+
+.dash-score {
+  padding: 16px 18px;
+  background: linear-gradient(135deg, #0044FF 0%, #3B7BFF 100%);
+  color: white;
+  text-align: center;
+}
+
+.dash-score .label {
+  font-size: 10px;
+  opacity: 0.8;
+  margin-bottom: 4px;
+}
+
+.dash-score .score {
+  font-size: 42px;
+  font-weight: 900;
+  font-family: 'Unbounded', sans-serif;
+  line-height: 1;
+}
+
+.dash-score .score-sub {
+  font-size: 14px;
+  opacity: 0.7;
+  margin-left: 2px;
+}
+
+.dash-score .grade {
+  display: inline-block;
+  margin-top: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 10px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 10px;
+}
+
+.dash-cards {
+  padding: 12px 14px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.dash-card {
+  background: var(--light);
+  border-radius: 12px;
+  padding: 10px 12px;
+}
+
+.dash-card .dc-label {
+  font-size: 9px;
+  color: var(--gray);
+  margin-bottom: 4px;
+}
+
+.dash-card .dc-value {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--dark);
+}
+
+.dash-card .dc-change {
+  font-size: 9px;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.dc-up { color: var(--green); }
+.dc-down { color: var(--red); }
+
+.dash-keywords {
+  padding: 8px 14px 14px;
+}
+
+.dash-keywords .dk-title {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 6px;
+}
+
+.dk-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 0;
+  border-bottom: 1px solid #F0F0F0;
+  font-size: 10px;
+}
+
+.dk-row:last-child { border-bottom: none; }
+
+.dk-rank {
+  width: 18px;
+  font-weight: 800;
+  color: var(--blue);
+}
+
+.dk-keyword {
+  flex: 1;
+  font-weight: 600;
+  color: var(--dark);
+}
+
+.dk-pos {
+  font-weight: 700;
+}
+
+.dk-pos.good { color: var(--green); }
+.dk-pos.mid { color: var(--orange); }
+.dk-pos.bad { color: var(--red); }
+
+/* Float notification */
+.float-noti {
+  position: absolute;
+  top: 100px;
+  right: -20px;
+  background: var(--white);
+  border-radius: 14px;
+  padding: 10px 14px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  animation: floatNoti 3s ease-in-out infinite;
+  z-index: 3;
+  white-space: nowrap;
+}
+
+.float-noti .noti-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: var(--blue);
+  color: white;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.float-noti .noti-text {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--dark);
+}
+
+.float-noti .noti-sub {
+  font-size: 8px;
+  color: var(--gray);
+  margin-top: 1px;
+}
+
+@keyframes floatNoti {
+  0%, 100% { transform: translateY(0) rotate(2deg); }
+  50% { transform: translateY(-8px) rotate(2deg); }
+}
+
+.float-noti2 {
+  position: absolute;
+  bottom: 60px;
+  left: -30px;
+  background: var(--white);
+  border-radius: 14px;
+  padding: 10px 14px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  animation: floatNoti2 4s ease-in-out infinite;
+  z-index: 3;
+  white-space: nowrap;
+}
+
+@keyframes floatNoti2 {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-10px) rotate(-2deg); }
+}
+
+/* CTA */
+
+.btn-hero {
+  display: inline-block;
+  padding: 15px 44px;
+  background: var(--orange);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 20px rgba(240,151,0,0.4);
+  text-decoration: none;
+}
+
+.btn-hero:hover {
+  background: var(--orange-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(240,151,0,0.5);
+}
+
+.hero-sub-note {
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.4);
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 1.2s;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-sub-note strong { color: var(--orange); }
+
+/* ===== SECTIONS ===== */
+.section { padding: 4.5rem 1.5rem; max-width: 720px; margin: 0 auto; }
+.section.full { max-width: 100%; }
+.section.white-bg { background: var(--white); }
+
+.section-tag {
+  display: inline-block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--blue);
+  padding: 5px 16px;
+  background: rgba(0,68,255,0.06);
+  border-radius: 20px;
+  margin-bottom: 1rem;
+}
+
+.section-title {
+  text-align: center;
+  font-size: clamp(1.5rem, 5vw, 1.85rem);
+  font-weight: 900;
+  margin-bottom: 0.6rem;
+  line-height: 1.35;
+}
+
+.section-sub {
+  text-align: center;
+  color: var(--gray);
+  font-size: 0.95rem;
+  margin-bottom: 2.5rem;
+  line-height: 1.7;
+}
+
+/* ===== PAIN POINTS v2 ===== */
+.pain-section {
+  padding: 4.5rem 1.5rem;
+  background: var(--light);
+}
+
+.pain-grid {
+  max-width: 640px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+@media (max-width: 560px) {
+  .pain-grid { grid-template-columns: 1fr; }
+}
+
+.pain-card-v2 {
+  background: var(--white);
+  border-radius: 18px;
+  padding: 1.5rem;
+  transition: transform 0.2s;
+}
+
+.pain-card-v2:hover {
+  transform: translateY(-2px);
+}
+
+.pv2-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  margin-bottom: 0.9rem;
+}
+
+.pv2-title {
+  font-size: 0.98rem;
+  font-weight: 800;
+  color: var(--dark);
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+}
+
+.pv2-desc {
+  font-size: 0.85rem;
+  color: var(--gray);
+  line-height: 1.65;
+}
+
+/* ===== FEATURES ===== */
+.features-section {
+  padding: 4.5rem 1.5rem;
+  background: var(--light);
+}
+
+.features {
+  max-width: 640px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+@media (max-width: 560px) {
+  .features { grid-template-columns: 1fr; }
+}
+
+.feature-card {
+  padding: 1.5rem;
+  border-radius: 18px;
+  color: white;
+  position: relative;
+  overflow: hidden;
+  min-height: 160px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  transition: transform 0.3s;
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+}
+
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: -30px;
+  right: -30px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+}
+
+.feature-card::after {
+  content: '';
+  position: absolute;
+  bottom: -20px;
+  left: -20px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+}
+
+.fc1 { background: linear-gradient(135deg, #0044FF, #3B7BFF); }
+.fc2 { background: linear-gradient(135deg, #0F6E56, #1D9E75); }
+.fc3 { background: linear-gradient(135deg, #E08A00, #F09700); }
+.fc4 { background: linear-gradient(135deg, #282559, #534AB7); }
+.fc5 { background: linear-gradient(135deg, #0C1630, #1a2a5e); }
+.fc6 { background: linear-gradient(135deg, #D85A30, #F0997B); }
+
+.feature-card .fc-icon {
+  font-size: 1.8rem;
+  margin-bottom: 0.8rem;
+  position: relative;
+  z-index: 1;
+}
+
+.feature-card .fc-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  margin-bottom: 0.3rem;
+  position: relative;
+  z-index: 1;
+}
+
+.feature-card .fc-desc {
+  font-size: 0.82rem;
+  opacity: 0.8;
+  line-height: 1.55;
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== BEFORE / AFTER v2 ===== */
+.compare-section {
+  padding: 4.5rem 1.5rem;
+  background: var(--light);
+}
+
+.compare-wrap-v2 {
+  max-width: 720px;
+  margin: 2rem auto 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+@media (max-width: 600px) {
+  .compare-wrap-v2 { grid-template-columns: 1fr; }
+}
+
+.report-box {
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--white);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+}
+
+.report-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+}
+
+.before-header {
+  background: var(--white);
+  border-bottom: 1px solid #F0F0F0;
+}
+
+.after-header {
+  background: var(--blue);
+}
+
+.report-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.before-icon {
+  background: #E5E7EB;
+  color: var(--gray);
+}
+
+.after-icon {
+  background: rgba(255,255,255,0.2);
+  font-size: 14px;
+}
+
+.report-label {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--dark);
+}
+
+.report-body {
+  padding: 18px 20px;
+}
+
+.report-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  font-size: 0.88rem;
+  color: var(--dark);
+  border-bottom: 1px solid #F8F8F8;
+}
+
+.report-row:last-child { border-bottom: none; }
+
+.check-green {
+  color: var(--green);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.data-row {
+  justify-content: space-between;
+}
+
+.data-label {
+  color: var(--dark);
+  font-size: 0.85rem;
+}
+
+.data-value {
+  font-weight: 800;
+  font-size: 0.88rem;
+  flex-shrink: 0;
+}
+
+.data-value.red { color: var(--red); }
+
+.report-quote {
+  margin: 0 20px 20px;
+  padding: 14px 16px;
+  background: #F8F8F8;
+  border-radius: 12px;
+  font-size: 0.82rem;
+  color: var(--gray);
+  line-height: 1.6;
+  font-style: italic;
+}
+
+.report-insight {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0 16px 16px;
+  padding: 14px 16px;
+  background: #FEF2F2;
+  border-radius: 12px;
+}
+
+.insight-icon {
+  flex-shrink: 0;
+  font-size: 1rem;
+}
+
+.insight-text {
+  font-size: 0.82rem;
+  color: var(--dark);
+  line-height: 1.6;
+}
+
+.insight-text strong {
+  color: var(--red);
+}
+
+/* ===== DIAGNOSIS PREVIEW ===== */
+.diag-section {
+  padding: 4.5rem 1.5rem;
+  background: linear-gradient(170deg, #0C1630, #0D1F4D);
+  color: white;
+}
+
+.diag-content {
+  max-width: 640px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.diag-section .section-title { color: white; }
+.diag-section .section-sub { color: rgba(255,255,255,0.5); }
+
+.diag-mock {
+  max-width: 400px;
+  margin: 0 auto 1rem;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px;
+  padding: 1.5rem;
+  text-align: left;
+}
+
+.diag-input-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 1.2rem;
+}
+
+.diag-input {
+  flex: 1;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.05);
+  color: white;
+  font-size: 0.9rem;
+  font-family: inherit;
+  outline: none;
+}
+
+.diag-input::placeholder { color: rgba(255,255,255,0.3); }
+
+.diag-btn {
+  padding: 12px 22px;
+  border-radius: 10px;
+  background: var(--blue);
+  color: white;
+  border: none;
+  font-weight: 800;
+  font-size: 0.9rem;
+  font-family: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.diag-btn:hover { background: #0038D4; }
+
+.diag-results {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.diag-result-card {
+  background: rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.diag-result-card .dr-label {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 4px;
+}
+
+.diag-result-card .dr-value {
+  font-size: 1.3rem;
+  font-weight: 800;
+}
+
+.dr-value.score-blue { color: var(--blue-light); }
+.dr-value.score-orange { color: var(--orange); }
+.dr-value.score-green { color: var(--green); }
+.dr-value.score-red { color: var(--red); }
+
+.diag-disclaimer {
+  margin-top: 1rem;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.4);
+  text-align: center;
+}
+
+/* ===== DASHBOARD PREVIEW ===== */
+.preview-section {
+  padding: 4.5rem 1.5rem;
+  background: var(--white);
+}
+
+.preview-window {
+  max-width: 600px;
+  margin: 2rem auto 0;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.1);
+}
+
+.pw-titlebar {
+  background: #1A1A2E;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pw-dots {
+  display: flex;
+  gap: 5px;
+}
+
+.pw-dots span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+}
+
+.pw-tab {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.5);
+}
+
+.pw-body {
+  background: var(--white);
+  padding: 1.5rem;
+}
+
+.pw-score-row {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  margin-bottom: 1.5rem;
+}
+
+.pw-donut { flex-shrink: 0; }
+
+.pw-score-label {
+  font-size: 0.8rem;
+  color: var(--gray);
+  margin-bottom: 2px;
+}
+
+.pw-score-value {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--dark);
+}
+
+.pw-up {
+  font-size: 0.85rem;
+  color: var(--green);
+  font-weight: 700;
+}
+
+.pw-score-sub {
+  font-size: 0.8rem;
+  color: var(--gray);
+  margin-top: 2px;
+}
+
+.pw-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 1.5rem;
+}
+
+.pw-metric {
+  padding: 12px;
+  background: var(--light);
+  border-radius: 12px;
+}
+
+.pw-m-label {
+  font-size: 0.72rem;
+  color: var(--gray);
+  margin-bottom: 4px;
+}
+
+.pw-m-value {
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: var(--dark);
+}
+
+.pw-m-sub {
+  font-size: 0.7rem;
+  color: var(--gray);
+  margin-top: 2px;
+}
+
+.pw-table {
+  border: 1px solid #F0F0F0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.pw-table-title {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--dark);
+  padding: 12px 16px;
+  border-bottom: 1px solid #F0F0F0;
+}
+
+.pw-table-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid #F8F8F8;
+  font-size: 0.85rem;
+}
+
+.pw-table-row:last-child { border-bottom: none; }
+
+.pw-kw {
+  font-weight: 700;
+  color: var(--dark);
+}
+
+.pw-ranks {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.82rem;
+  color: var(--gray);
+}
+
+.pw-n strong, .pw-g strong {
+  color: var(--dark);
+  font-weight: 800;
+}
+
+.pw-date {
+  font-size: 0.75rem;
+  color: #B0B0B0;
+}
+
+@media (max-width: 480px) {
+  .pw-metrics { grid-template-columns: repeat(2, 1fr); }
+  .pw-ranks { gap: 8px; font-size: 0.75rem; }
+  .hero-cta { flex-direction: column; gap: 10px; }
+  .btn-hero, .btn-hero-outline { width: 100%; text-align: center; }
+}
+
+/* ===== EMOTION SECTION ===== */
+.emotion-section {
+  padding: 4.5rem 1.5rem;
+  background: var(--dark);
+  color: white;
+}
+
+.emotion-cards {
+  max-width: 440px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.emotion-card {
+  background: rgba(255,255,255,0.04);
+  border-radius: 16px;
+  padding: 1rem 1.25rem;
+}
+
+.emotion-card .time {
+  font-size: 0.75rem;
+  color: var(--blue-light);
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.emotion-card .msg {
+  font-size: 0.92rem;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.65;
+}
+
+/* ===== CTA SECTION ===== */
+.cta-section {
+  padding: 4.5rem 1.5rem;
+  background: var(--white);
+  text-align: center;
+}
+
+.cta-content {
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.cta-form {
+  display: flex;
+  gap: 8px;
+  max-width: 400px;
+  margin: 0 auto 1rem;
+}
+
+@media (max-width: 480px) {
+  .cta-form {
+    flex-direction: column;
+  }
+  .cta-submit {
+    width: 100%;
+  }
+}
+
+.cta-input {
+  flex: 1;
+  padding: 14px 18px;
+  border-radius: 14px;
+  border: 2px solid var(--gray-light);
+  font-size: 0.95rem;
+  font-family: inherit;
+  outline: none;
+  transition: border 0.2s;
+}
+
+.cta-input:focus {
+  border-color: var(--blue);
+}
+
+.cta-submit {
+  padding: 14px 28px;
+  border-radius: 14px;
+  background: var(--orange);
+  color: white;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 800;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.cta-submit:hover {
+  background: var(--orange-dark);
+  transform: translateY(-1px);
+}
+
+.cta-note {
+  font-size: 0.82rem;
+  color: var(--gray);
+  line-height: 1.6;
+}
+
+/* Success state */
+.cta-success {
+  display: none;
+  text-align: center;
+}
+
+.cta-success.show { display: block; }
+
+.cta-success .check {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--green);
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  animation: countUp 0.4s ease;
+}
+
+.cta-success h4 {
+  font-size: 1.2rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+
+.cta-success p {
+  color: var(--gray);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+/* ===== HOW IT WORKS ===== */
+.howit-section {
+  padding: 4.5rem 1.5rem;
+  background: var(--white);
+}
+
+.steps-grid {
+  max-width: 720px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  position: relative;
+}
+
+@media (max-width: 600px) {
+  .steps-grid { grid-template-columns: 1fr; }
+}
+
+.step-card {
+  border-radius: 18px;
+  padding: 1.5rem;
+  transition: transform 0.2s;
+}
+
+.step-card:hover { transform: translateY(-2px); }
+
+.step-blue { background: #EFF6FF; }
+.step-yellow { background: #FFFBEB; }
+.step-purple { background: #F5F3FF; }
+.step-green { background: #ECFDF5; }
+
+.step-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1rem;
+}
+
+.step-emoji {
+  font-size: 1.5rem;
+}
+
+.step-num {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--gray);
+  letter-spacing: 0.05em;
+  margin-bottom: 1px;
+}
+
+.step-name {
+  font-size: 1.15rem;
+  font-weight: 900;
+  color: var(--dark);
+}
+
+.step-quote {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--dark);
+  margin-bottom: 0.6rem;
+  line-height: 1.4;
+}
+
+.step-desc {
+  font-size: 0.85rem;
+  color: var(--gray);
+  line-height: 1.65;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  padding: 2rem 1.5rem;
+  background: var(--navy);
+  text-align: center;
+}
+
+footer p {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.3);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (min-width: 768px) {
+  .hero { padding: 3rem 2rem 4rem; }
+  .dash-mock { width: 380px; }
+}
+</style>
+</head>
+<body>
+
+<!-- SVG Defs for logo -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <linearGradient id="rngD" x1="0" y1="0" x2="60" y2="60" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#33DDFF"/><stop offset="100%" stop-color="#3366FF"/>
+    </linearGradient>
+    <linearGradient id="wvD" x1="4" y1="30" x2="56" y2="30" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#55DDFF"/><stop offset="100%" stop-color="#4477FF"/>
+    </linearGradient>
+    <linearGradient id="blD" x1="0" y1="0" x2="300" y2="50" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#55CCFF"/><stop offset="100%" stop-color="#4488FF"/>
+    </linearGradient>
+    <filter id="nn">
+      <feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="#3388FF" flood-opacity="0.35"/>
+    </filter>
+    <filter id="gwD" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+</svg>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="logo-area">
+      <svg class="logo-svg" width="220" height="44" viewBox="0 0 620 68">
+        <circle cx="32" cy="34" r="28" stroke="url(#rngD)" stroke-width="5.5" fill="none" filter="url(#nn)"/>
+        <circle cx="32" cy="34" r="19" fill="#0c1530" opacity="0.8"/>
+        <polyline points="6,34 16,34 21,18 28,48 32,24 37,44 42,34 52,34" 
+          stroke="url(#wvD)" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#gwD)"/>
+        <text x="78" y="48" font-family="'Unbounded', sans-serif" font-size="46" font-weight="900" letter-spacing="-1.5">
+          <tspan fill="#E8F0FF">Signal</tspan><tspan fill="url(#blD)">Lens</tspan>
+        </text>
+      </svg>
+    </div>
+    <div class="logo-tagline-row">마케팅 시그널을 찾아내다<span class="dot-orange">.</span></div>
+
+    <h1 class="headline">
+      우리 병원 마케팅,<br><span class="blue">지금 몇 점</span>인가요?
+    </h1>
+
+    <p class="subline">
+      네이버 블로그, 유튜브, 인스타그램, 틱톡, 구글 광고까지<br>
+      채널은 많고 비용은 커지는데, 뭐가 효과 있는지 모르겠다면
+    </p>
+
+    <p class="subline-bold">이제 데이터로 확인하세요.</p>
+
+    <div class="hero-cta">
+      <a href="#cta" class="btn-hero">우리 병원 무료 진단 →</a>
+      <a href="#features" class="btn-hero-outline">기능 살펴보기</a>
+    </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PAIN POINTS ===== -->
+<section class="pain-section">
+  <div class="reveal" style="text-align:left;max-width:640px;margin:0 auto;">
+    <h2 class="section-title" style="text-align:left;margin-bottom:2rem;">블로그, 유튜브, 인스타, 광고...<br>비용은 커지는데 성과는 안 보인다</h2>
+  </div>
+  <div class="pain-grid">
+    <div class="pain-card-v2 reveal">
+      <div class="pv2-icon">🔍</div>
+      <div class="pv2-title">블로그·SNS, 검색에 뜨고 있는 건가?</div>
+      <div class="pv2-desc">블로그는 매달 올리고, 유튜브·인스타도 운영 중인데 실제 검색에 노출되고 환자가 보고 있는지 확인할 방법이 없습니다.</div>
+    </div>
+    <div class="pain-card-v2 reveal">
+      <div class="pv2-icon">💸</div>
+      <div class="pv2-title">유튜브·인스타 비용은 큰데 효과는?</div>
+      <div class="pv2-desc">영상 촬영, 편집, 광고까지 채널당 수백만원씩 투자하는데, 실제 환자 유입으로 이어지는지 파악이 안 됩니다.</div>
+    </div>
+    <div class="pain-card-v2 reveal">
+      <div class="pv2-icon">📊</div>
+      <div class="pv2-title">경쟁 병원과 비교가 안 된다</div>
+      <div class="pv2-desc">같은 지역 경쟁 병원의 검색 순위, 리뷰 수, SNS 전략을 객관적으로 비교할 방법이 없습니다.</div>
+    </div>
+    <div class="pain-card-v2 reveal">
+      <div class="pv2-icon">📱</div>
+      <div class="pv2-title">채널이 너무 많아 한눈에 안 보인다</div>
+      <div class="pv2-desc">네이버, 구글, 유튜브, 인스타, 틱톡, 스레드... 데이터가 흩어져 있어 전체 그림을 파악하기 어렵습니다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FEATURES ===== -->
+<section class="features-section" id="features">
+  <div class="reveal" style="text-align:center;">
+    <span class="section-tag">SignalLens가 해결합니다</span>
+    <h2 class="section-title">흩어진 마케팅 데이터,<br>한 화면에 모아드립니다.</h2>
+    <p class="section-sub">채널별 성과 분석부터 경쟁사 비교, AI 전략까지.</p>
+  </div>
+  <div class="features">
+    <div class="feature-card fc1 reveal">
+      <div class="fc-icon">📈</div>
+      <div class="fc-title">마케팅 성과 분석</div>
+      <div class="fc-desc">마케팅 점수 · 키워드 · 콘텐츠 · 비용 ROI를 한눈에 분석</div>
+    </div>
+    <div class="feature-card fc2 reveal">
+      <div class="fc-icon">📱</div>
+      <div class="fc-title">SNS 채널 분석</div>
+      <div class="fc-desc">YouTube · Instagram · TikTok 등 콘텐츠 운영 및 지표 분석</div>
+    </div>
+    <div class="feature-card fc3 reveal">
+      <div class="fc-icon">🔍</div>
+      <div class="fc-title">SEO 분석</div>
+      <div class="fc-desc">네이버·구글 키워드 순위 추적 + 홈페이지 진단</div>
+    </div>
+    <div class="feature-card fc4 reveal">
+      <div class="fc-icon">🤖</div>
+      <div class="fc-title">GEO 분석</div>
+      <div class="fc-desc">ChatGPT·Gemini 등 AI 검색에서 우리 병원 노출 추적</div>
+    </div>
+    <div class="feature-card fc5 reveal">
+      <div class="fc-icon">🏥</div>
+      <div class="fc-title">경쟁사 분석</div>
+      <div class="fc-desc">주변 경쟁 병원의 검색·리뷰·콘텐츠 성과 비교</div>
+    </div>
+    <div class="feature-card fc6 reveal">
+      <div class="fc-icon">💡</div>
+      <div class="fc-title">AI 전략</div>
+      <div class="fc-desc">데이터 기반 실행 가능한 마케팅 액션을 자동 제안</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== BEFORE / AFTER ===== -->
+<section class="compare-section">
+  <div class="reveal" style="text-align:left;max-width:720px;margin:0 auto;">
+    <span class="section-tag">BEFORE & AFTER</span>
+    <h2 class="section-title" style="text-align:left;">같은 마케팅,<br>완전히 다른 시각</h2>
+  </div>
+  <div class="compare-wrap-v2">
+    <!-- 기존 리포트 -->
+    <div class="report-box before-box reveal">
+      <div class="report-header before-header">
+        <span class="report-icon before-icon">B</span>
+        <span class="report-label">기존 리포트</span>
+      </div>
+      <div class="report-body">
+        <div class="report-row"><span class="check-green">✓</span>블로그 포스팅 20개 완료</div>
+        <div class="report-row"><span class="check-green">✓</span>키워드 상위 노출 관리 중</div>
+        <div class="report-row"><span class="check-green">✓</span>홈페이지 방문자 증가 추세</div>
+        <div class="report-row"><span class="check-green">✓</span>SNS 채널 꾸준히 운영 중</div>
+      </div>
+      <div class="report-quote">"전반적으로 양호한 성과를 보이고 있으며,<br>지속적인 관리가 필요합니다."</div>
+    </div>
+    <!-- SignalLens 분석 결과 -->
+    <div class="report-box after-box reveal">
+      <div class="report-header after-header">
+        <span class="report-icon after-icon">📈</span>
+        <span class="report-label" style="color:white;">SignalLens 분석 결과</span>
+      </div>
+      <div class="report-body">
+        <div class="report-row data-row"><span class="data-label">블로그 20개 중 검색 노출</span><span class="data-value red">3개 (15%)</span></div>
+        <div class="report-row data-row"><span class="data-label">'강남 피부과' 키워드 순위</span><span class="data-value red">5위 → 7위 ↓</span></div>
+        <div class="report-row data-row"><span class="data-label">유튜브 월 200만원 투자 → 내원</span><span class="data-value red">1명</span></div>
+        <div class="report-row data-row"><span class="data-label">인스타 팔로워 5천명 → 내원</span><span class="data-value red">3명</span></div>
+        <div class="report-row data-row"><span class="data-label">전체 채널 종합 ROI</span><span class="data-value red">적자 상태</span></div>
+      </div>
+      <div class="report-insight">
+        <span class="insight-icon">💡</span>
+        <span class="insight-text"><strong>핵심:</strong> 블로그 85%가 검색 미노출, 유튜브 월 200만원 투자 대비 내원 1명. 채널별 ROI 기반으로 예산 재배분이 시급합니다.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== DASHBOARD PREVIEW ===== -->
+<section class="preview-section">
+  <div class="reveal" style="text-align:center;">
+    <span class="section-tag">DASHBOARD PREVIEW</span>
+    <h2 class="section-title">매일 30초면 충분합니다</h2>
+  </div>
+  <div class="preview-window reveal">
+    <div class="pw-titlebar">
+      <div class="pw-dots"><span></span><span></span><span></span></div>
+      <div class="pw-tab">마케팅 성과 분석 — 종합</div>
+    </div>
+    <div class="pw-body">
+      <!-- 마케팅 점수 -->
+      <div class="pw-score-row">
+        <div class="pw-donut">
+          <svg width="80" height="80" viewBox="0 0 80 80">
+            <circle cx="40" cy="40" r="34" fill="none" stroke="#E5E7EB" stroke-width="7"/>
+            <circle cx="40" cy="40" r="34" fill="none" stroke="#0044FF" stroke-width="7" stroke-dasharray="155 214" stroke-dashoffset="-53" stroke-linecap="round" transform="rotate(-90 40 40)"/>
+            <text x="40" y="44" text-anchor="middle" font-size="20" font-weight="900" fill="#0C1630" font-family="'Unbounded',sans-serif">72</text>
+          </svg>
+        </div>
+        <div class="pw-score-info">
+          <div class="pw-score-label">마케팅 점수</div>
+          <div class="pw-score-value">72점 <span class="pw-up">+5 ▲</span></div>
+          <div class="pw-score-sub">전월 67점 대비 개선</div>
+        </div>
+      </div>
+      <!-- 4 메트릭 카드 -->
+      <div class="pw-metrics">
+        <div class="pw-metric">
+          <div class="pw-m-label">키워드</div>
+          <div class="pw-m-value" style="color:var(--blue);">4.2위</div>
+          <div class="pw-m-sub">평균 순위</div>
+        </div>
+        <div class="pw-metric">
+          <div class="pw-m-label">콘텐츠</div>
+          <div class="pw-m-value" style="color:var(--blue);">42%</div>
+          <div class="pw-m-sub">검색 노출률</div>
+        </div>
+        <div class="pw-metric">
+          <div class="pw-m-label">비용</div>
+          <div class="pw-m-value">230만</div>
+          <div class="pw-m-sub">이번 달</div>
+        </div>
+        <div class="pw-metric">
+          <div class="pw-m-label">신환</div>
+          <div class="pw-m-value" style="color:var(--orange);">23명</div>
+          <div class="pw-m-sub">▲12%</div>
+        </div>
+      </div>
+      <!-- 키워드 순위 테이블 -->
+      <div class="pw-table">
+        <div class="pw-table-title">키워드 순위</div>
+        <div class="pw-table-row">
+          <span class="pw-kw">강남 피부과</span>
+          <span class="pw-ranks"><span class="pw-n">N <strong>3위</strong></span><span class="pw-g">G <strong>4위</strong></span><span class="pw-date">6/16 06:00</span></span>
+        </div>
+        <div class="pw-table-row">
+          <span class="pw-kw">보톡스 잘하는곳</span>
+          <span class="pw-ranks"><span class="pw-n">N <strong>1위</strong></span><span class="pw-g">G <strong>9위</strong></span><span class="pw-date">6/16 06:00</span></span>
+        </div>
+        <div class="pw-table-row">
+          <span class="pw-kw">강남 필러 가격</span>
+          <span class="pw-ranks"><span class="pw-n">N <strong>2위</strong></span><span class="pw-g">G <strong>—</strong></span><span class="pw-date">6/16 06:00</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== HOW IT WORKS ===== -->
+<section class="howit-section">
+  <div class="reveal" style="text-align:left;max-width:720px;margin:0 auto;">
+    <span class="section-tag">HOW IT WORKS</span>
+    <h2 class="section-title" style="text-align:left;">문제 발견에서 끝나지 않습니다</h2>
+    <p class="section-sub" style="text-align:left;">SignalLens는 현황 파악부터 개선, 성과 추적까지 전 과정을 함께합니다.</p>
+  </div>
+  <div class="steps-grid">
+    <div class="step-card step-blue reveal">
+      <div class="step-header">
+        <span class="step-emoji">🔍</span>
+        <div>
+          <div class="step-num">STEP 01</div>
+          <div class="step-name">발견</div>
+        </div>
+      </div>
+      <div class="step-quote">"블로그 85% 검색 미노출, 유튜브 ROI 적자"</div>
+      <div class="step-desc">네이버·구글 키워드 순위, SNS 채널별 투자 대비 유입 효과를 자동으로 추적하여 어디서 성과가 나고 어디서 새고 있는지 찾아냅니다.</div>
+    </div>
+    <div class="step-card step-yellow reveal">
+      <div class="step-header">
+        <span class="step-emoji">🔎</span>
+        <div>
+          <div class="step-num">STEP 02</div>
+          <div class="step-name">원인 분석</div>
+        </div>
+      </div>
+      <div class="step-quote">"블로그 키워드 부재, 유튜브 타겟 불일치"</div>
+      <div class="step-desc">블로그는 왜 노출이 안 되는지, 유튜브·인스타는 왜 조회수 대비 환자가 안 오는지 데이터 기반으로 원인을 분석합니다.</div>
+    </div>
+    <div class="step-card step-purple reveal">
+      <div class="step-header">
+        <span class="step-emoji">💡</span>
+        <div>
+          <div class="step-num">STEP 03</div>
+          <div class="step-name">개선 제안</div>
+        </div>
+      </div>
+      <div class="step-quote">"블로그 키워드 전략 + SNS 예산 재배분"</div>
+      <div class="step-desc">검색 노출이 되는 블로그 작성법, 비용 대비 환자 유입이 높은 채널에 예산을 집중하는 방향을 구체적으로 제안합니다.</div>
+    </div>
+    <div class="step-card step-green reveal">
+      <div class="step-header">
+        <span class="step-emoji">📈</span>
+        <div>
+          <div class="step-num">STEP 04</div>
+          <div class="step-name">성과 추적</div>
+        </div>
+      </div>
+      <div class="step-quote">"노출률 20%→45%, 채널별 ROI 흑자 전환"</div>
+      <div class="step-desc">개선 후 블로그 순위 변동, SNS 채널별 환자 유입 변화를 추적하여 실제로 효과가 있었는지 숫자로 확인합니다.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== BOTTOM CTA ===== -->
+<section class="cta-section" id="cta">
+  <div class="cta-content">
+    <div class="reveal">
+      <span class="section-tag">FREE DIAGNOSIS</span>
+      <h2 class="section-title">우리 병원 마케팅,<br>지금 바로 확인해보세요</h2>
+      <p class="section-sub">사전등록하시면 출시 즉시 무료 마케팅 진단을 받아보실 수 있습니다.<br>병원 이름만 입력하면 실제 데이터 기반으로 마케팅 현황을 분석해드립니다.</p>
+    </div>
+    <div id="ctaForm" class="reveal">
+      <div class="cta-form">
+        <input class="cta-input" type="email" id="ctaEmail" placeholder="이메일 주소 입력" />
+        <button class="cta-submit" onclick="submitCTA()">무료 진단 사전등록</button>
+      </div>
+      <p class="cta-note">출시 소식과 무료 진단 안내만 보내드립니다.</p>
+    </div>
+    <div id="ctaSuccess" class="cta-success">
+      <div class="check">✓</div>
+      <h4>사전등록 완료!</h4>
+      <p>출시되면 무료 진단 링크와 함께 가장 먼저 알려드릴게요 🎉</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <p>© 2026 SignalLens. 병원 마케팅의 시그널을 찾아준다.<br>문의: mr.ceo@daum.net</p>
+</footer>
+
+<script>
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// CTA submit
+function submitCTA() {
+  const email = document.getElementById('ctaEmail').value.trim();
+  if (!email || !email.includes('@')) {
+    alert('이메일을 입력해주세요');
+    return;
+  }
+  document.getElementById('ctaForm').style.display = 'none';
+  document.getElementById('ctaSuccess').classList.add('show');
+  document.getElementById('ctaSuccess').style.display = 'block';
+}
+</script>
+
+</body>
+</html>
